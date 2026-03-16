@@ -1,0 +1,26 @@
+name: Ansible CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  ansible-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Ansible
+        run: |
+          pip install ansible ansible-lint
+
+      - name: Ansible Syntax Check
+        run: |
+          ansible-playbook playbooks/site.yml --syntax-check
+
+      - name: Run Ansible Lint
+        run: |
+          ansible-lint
